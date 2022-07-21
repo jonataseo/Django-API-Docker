@@ -7,8 +7,11 @@ WORKDIR /app
 COPY . . 
 # Install Dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN python ./manage.py makemigrations
+RUN python ./manage.py migrate
+RUN python ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', '1234')"
 #creating volume
-VOLUME /django_src 
+VOLUME ./django_src 
 #expose port
 EXPOSE 8080
 
